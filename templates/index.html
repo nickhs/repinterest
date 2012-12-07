@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>redditerest</title>
+
+
+    <script src="/static/js/jquery-1.8.3.js"></script>
+    <script src="/static/js/underscore.js"></script>
+    <script src="/static/js/backbone.js"></script>
+    <script src="/static/js/jquery.isotope.min.js"></script>
+
+    <script src="/static/js/main.js"></script>
+
+    <link rel="stylesheet" href="/static/css/toast.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+
+  </head>
+
+  <body>
+
+    <div class="wrap">
+      <div class="grids">
+        <div class="grid-12">
+          <header>
+            <h1>redditerest - reddit x pinterest</h1>
+            <div class="search">
+              <input type="text" placeholder="search">
+            </div>
+          </header>
+
+          <div class="container">
+            <section>
+            </section>
+          </div>
+
+          <footer class="hidden">
+            made with love, nick
+          </footer>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+  <div id="shortcut">
+    {% if sc %}
+      {{ sc }}
+    {% endif %}
+  </div>
+
+  <script type="text/template" id="item-template">
+    <img src="<%= url %>" />
+    <div class="text">
+      <a href="http://reddit.com/<%= link %>" target="_blank"><%= title %></a>
+    </div>
+  </script>
+
+  <script type="text/template" id="show-template">
+    <div class="table-cell">
+      <img src="<%= url %>" />
+      <div class="close">x</div>
+    </div>
+  </script>
+
+  <script type="text/template" id="status-template">
+    <h1><%= message %></h1>
+  </script>
+
+</html>
