@@ -13,3 +13,8 @@ def deploy():
     with cd('/srv/repinterest'):
         run('git pull')
         run("supervisorctl restart repinterest")
+
+
+def g():
+    prepare_deploy()
+    deploy()
