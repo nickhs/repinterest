@@ -15,3 +15,7 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    REDIS_HOST = "localhost"
+    REDIS_PORT = 6379
+    DB = 0
+    PORT = 8085
