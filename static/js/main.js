@@ -68,8 +68,7 @@ var ShowView = Backbone.View.extend({
   className: 'show-view',
 
   events: {
-    'click': 'closeView',
-    'click img': 'stopProp'
+    'click': 'closeView'
   },
 
   initialize: function() {
@@ -158,6 +157,7 @@ var StatusView = Backbone.View.extend({
 
     this.$el.html(this.template(json));
     $('body').append(this.el);
+    setTimeout(this.animateLoading, 500);
     return this;
   },
 
@@ -166,6 +166,10 @@ var StatusView = Backbone.View.extend({
     setTimeout(function() {
       this.remove();
     }.bind(this), 3000);
+  },
+
+  animateLoading: function() {
+    $('.status-view input').prop('checked', true);
   }
 });
 

@@ -69,7 +69,7 @@ def data(subreddit):
     return jsonify({"data": clean})
 
 
-@app.route('/<sc>')
+@app.route('/<path:sc>')
 def shortcut(sc):
     return render_template('index.html', sc=sc)
 

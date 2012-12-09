@@ -27,6 +27,32 @@ header {
   opacity: 0;
 }
 
+.status-view input[type='checkbox'] {
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  left: 50%;
+  margin-left: -40px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-transition: all ease-in-out 5s;
+}
+
+.status-view input[type='checkbox']:after {
+  content: '+';
+  font: 1.3em bold;
+  color: black;
+
+  position: absolute;
+  padding-left: 19px;
+  line-height: 67px;
+}
+
+.status-view input[type='checkbox']:checked {
+  -webkit-transform: rotateZ(5062deg);
+}
+
 .item img {
   width: 300px;
 }
