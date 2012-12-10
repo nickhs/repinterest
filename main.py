@@ -58,11 +58,14 @@ def data(subreddit):
             else:
                 if 'imgur.com' in url and '/a/' in url:
                     continue
-                if 'imgur.com' in url:
+                elif 'imgur.com' in url:
                     tid = url.split('/')[-1]
                     url = "http://i.imgur.com/%s.jpg" % tid
                 else:
                     continue
+
+            if subreddit == 'pics' and item['data']['over_18']:
+                continue
 
             clean.append({
                 'id': item['data']['id'],
@@ -72,7 +75,7 @@ def data(subreddit):
                 'title': item['data']['title']
             })
 
-    cache.setex(subreddit, 300, pickle.dumps(clean))
+    cache.setex(subreddit, 600, pickle.dumps(clean))
     return jsonify({"data": clean})
 
 
