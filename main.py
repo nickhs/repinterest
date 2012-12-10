@@ -20,10 +20,17 @@ cache = redis.StrictRedis(host=app.config['REDIS_HOST'],
                           port=app.config['REDIS_PORT'],
                           db=app.config['DB'])
 
+global reddit_list
+
 
 @app.route('/')
 def main():
     return render_template('index.html', sc=None)
+
+
+@app.route('/d')
+def subreddit_list():
+    return jsonify({'data': reddit_list})
 
 
 @app.route('/r/<subreddit>')
@@ -74,4 +81,9 @@ def shortcut(sc):
     return render_template('index.html', sc=sc)
 
 if __name__ == '__main__':
+    f = open('reddits.txt')
+    data = f.read()
+    global reddit_list
+    reddit_list = data.split('\n')[:-1]
+
     app.run(host=app.config['HOST'], port=app.config['PORT'])
