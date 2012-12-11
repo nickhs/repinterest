@@ -1,9 +1,11 @@
+
 $(function() {
   items = new Items($('#shortcut').text().trim());
   itemsView = new ItemsView();
-  searchView = new SearchView();
   statusView = new StatusView();
+  searchView = new SearchView();
 
+  searchView.typeahead = new Typeahead({parent: searchView});
   console.log("Houston we have liftoff");
 });
 
@@ -11,7 +13,10 @@ var SearchView = Backbone.View.extend({
   el: ".search",
 
   events: {
-    'keypress input[type=text]': 'searchOnEnter'
+    'keypress input[type=text]': 'searchOnEnter',
+    'keyup input[type=text]': 'filterTypeahead',
+    'focusin': 'showTypeahead',
+    'focusout': 'hideTypeahead'
   },
 
   searchOnEnter: function(e) {
@@ -22,11 +27,75 @@ var SearchView = Backbone.View.extend({
 
   search: function() {
     var search_text = this.$el.children().val();
-    console.log('text:', search_text);
-
-    history.pushState(search_text, "repinterest", search_text);
-
     items.changeSub(search_text);
+  },
+
+  showTypeahead: function(e) {
+    this.typeahead.show();
+  },
+
+  hideTypeahead: function(e) {
+    this.$el.children().val('');
+    setTimeout(function() {
+      this.typeahead.hide();
+    }.bind(this), 200);
+  },
+
+  filterTypeahead: function(e) {
+    this.typeahead.filter(e.currentTarget.value);
+  }
+});
+
+var Typeahead = Backbone.View.extend({
+  tagName: 'div',
+  className: 'typeahead',
+
+  initialize: function(stuff) {
+    this.parent = stuff.parent; // FIXME dirty hack
+    this.template = _.template($('#typeahead-template').html());
+    this.reddits = new Reddits();
+    this.reddits.fetch();
+  },
+
+  render: function(toShow) {
+    console.log("rendering typeahead", toShow);
+    this.$el.html(this.template({'data': toShow.toJSON()}));
+    this.parent.$el.append(this.el);
+    this.showing = true;
+    return this;
+  },
+
+  itemClicked: function(event) {
+    console.log("itemClicked", event);
+    this.hide();
+    items.changeSub(event.currentTarget.innerText);
+  },
+
+  hide: function() {
+    this.showing = false;
+    this.remove();
+  },
+
+  show: function() {
+    if (!this.showing) {
+      this.render(this.reddits);
+    }
+  },
+
+  filter: function(crit) {
+    if (crit === "") {
+      this.render(this.reddits);
+      return;
+    }
+
+    this.remove();
+    var temp = this.reddits.filter(function(item) {
+      if (item.id.toLowerCase().indexOf(crit.toLowerCase()) > -1)
+        return item;
+    });
+
+    var toShow = new Reddits(temp);
+    this.render(toShow);
   }
 });
 
@@ -173,19 +242,7 @@ var StatusView = Backbone.View.extend({
   }
 });
 
-var Item = Backbone.Model.extend({
-  initialize: function(item) {
-    this.item = item;
-  },
-
-  parse: function(response) {
-    return response;
-  }
-});
-
 var Items = Backbone.Collection.extend({
-  model: Item,
-
   initialize: function(url) {
     console.log('init', url);
     if (url) {
@@ -211,6 +268,22 @@ var Items = Backbone.Collection.extend({
 
   changeSub: function(sub) {
     this.url = '/r/' + sub;
+    history.pushState(sub, "repinterest", sub);
     this.fetch({success: this.success.bind(this), failure: this.failure.bind(this)});
+  }
+});
+
+var Reddit = Backbone.Model.extend({
+  parse: function(response) {
+    return {id: response};
+  }
+});
+
+var Reddits = Backbone.Collection.extend({
+  url: '/d',
+  model: Reddit,
+
+  parse: function(response) {
+    return response.data;
   }
 });

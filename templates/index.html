@@ -69,4 +69,12 @@
     <input type="checkbox">
   </script>
 
+  <script type="text/template" id="typeahead-template">
+    <ul>
+    <% _.each(data, function(item) { %>
+      <li class=typeahead-item><a href="/<%= item.id %>"><%= item.id %></a></li>
+    <% }); %>
+    </ul>
+  </script>
+
 </html>
