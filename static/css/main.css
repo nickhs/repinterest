@@ -113,7 +113,7 @@ header h1 {
 }
 
 .search input:focus {
-  outline: red solid 2px;
+  background: red solid 2px;
   cursor: auto;
   box-shadow: 0px 2px 10px -2px black;
 }
