@@ -84,7 +84,7 @@ def shortcut(sc):
     return render_template('index.html', sc=sc)
 
 if __name__ == '__main__':
-    f = open('reddits.txt')
+    f = open(app.config['REDDIT_LIST'])
     data = f.read()
     global reddit_list
     reddit_list = data.split('\n')[:-1]
