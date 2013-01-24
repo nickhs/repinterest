@@ -84,6 +84,8 @@ def shortcut(sc):
     return render_template('index.html', sc=sc)
 
 if __name__ == '__main__':
+    print "WHY YOU NO PRINT"
+
     f = open(app.config['REDDIT_LIST'])
     data = f.read()
     print "DATA IS: " + str(data)
