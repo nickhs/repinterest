@@ -83,13 +83,14 @@ def data(subreddit):
 def shortcut(sc):
     return render_template('index.html', sc=sc)
 
-if __name__ == '__main__':
-    print "WHY YOU NO PRINT"
 
+def read_reddit_list():
     f = open(app.config['REDDIT_LIST'])
     data = f.read()
-    print "DATA IS: " + str(data)
     global reddit_list
     reddit_list = data.split('\n')[:-1]
 
+read_reddit_list()
+
+if __name__ == '__main__':
     app.run(host=app.config['HOST'], port=app.config['PORT'])
