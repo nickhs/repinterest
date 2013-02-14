@@ -191,7 +191,7 @@ header h1 {
   cursor: pointer;
 }
 
-.typeahead-item:hover {
+.typeahead-item:hover, .typeahead-item.selected {
   background: white;
   color: black;
 }

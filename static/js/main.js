@@ -13,15 +13,45 @@ var SearchView = Backbone.View.extend({
   el: ".search",
 
   events: {
-    'keypress input[type=text]': 'searchOnEnter',
-    'keyup input[type=text]': 'filterTypeahead',
+    'keypress': 'keyPressMarshall',
+    'keyup': 'keyPressMarshall',
     'focusin': 'showTypeahead',
     'focusout': 'hideTypeahead'
   },
 
-  searchOnEnter: function(e) {
-    if (e.keyCode == 13) {
+  keyPressMarshall: function(e) {
+    console.log('keycode', e.keyCode);
+    if (e.keyCode === 13) {
       this.search();
+    } else if (e.keyCode === 27) {
+      this.hideTypeahead();
+    } else if (e.keyCode === 38) {
+      this.selectItem(-1);
+    } else if (e.keyCode === 40) {
+      this.selectItem(1);
+    } else {
+      this.filterTypeahead(e);
+    }
+  },
+
+  selectItem: function(position) {
+    var check = false;
+    var typitems = this.typeahead.$el.find('li');
+
+    typitems.each(function(idx, item) {
+      if (check) return;
+
+      item = $(item);
+      if (item.hasClass('selected')) {
+        item.removeClass('selected');
+        $(typitems[idx + position]).addClass('selected');
+        check = true;
+      }
+    });
+
+    if (!check && position > 0) {
+      console.log('here');
+      $(typitems[0]).addClass('selected');
     }
   },
 
@@ -42,7 +72,8 @@ var SearchView = Backbone.View.extend({
   },
 
   filterTypeahead: function(e) {
-    this.typeahead.filter(e.currentTarget.value);
+    window.e = this.$el;
+    this.typeahead.filter(this.$el.children().val());
   }
 });
 
