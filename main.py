@@ -46,7 +46,7 @@ def data(subreddit):
     print "Cache miss"
 
     if resp.ok:
-        items = resp.json['data']['children']
+        items = resp.json()['data']['children']
         clean = []
 
         for item in items:
