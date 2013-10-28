@@ -36,3 +36,4 @@ have a fabfile. Just do `fab g` to deploy.
 # TODO
 
 * Fix CSS on displaying large images so they fit on the screen.
+* Infinite scroll
