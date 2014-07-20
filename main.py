@@ -42,12 +42,12 @@ def data(subreddit):
         return jsonify({"data": pickle.loads(data)})
 
     url = "http://reddit.com/r/%s.json" % subreddit
-    resp = requests.get(url)
+    resp = requests.get(url, headers={'User-Agent': 'repinterest/1.0 by greenmangoes'})
     print "Cache miss"
 
+    clean = []
     if resp.ok:
         items = resp.json()['data']['children']
-        clean = []
 
         for item in items:
             url = item['data']['url']
@@ -75,7 +75,7 @@ def data(subreddit):
                 'title': item['data']['title']
             })
 
-    cache.setex(subreddit, 600, pickle.dumps(clean))
+        cache.setex(subreddit, 600, pickle.dumps(clean))
     return jsonify({"data": clean})
 
 
