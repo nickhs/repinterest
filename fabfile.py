@@ -1,6 +1,6 @@
 from fabric.api import run, local, cd, env
 
-env.hosts = ['nickhs']
+env.hosts = ['nickhs.com']
 env.use_ssh_config = True
 
 
