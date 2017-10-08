@@ -33,22 +33,18 @@ def subreddit_list():
     return jsonify({'data': reddit_list})
 
 
-@app.route('/r/<subreddit>')
-def data(subreddit):
-    data = cache.get(subreddit)
-
-    if data is not None:
-        print "Cache hit"
-        return jsonify({"data": pickle.loads(data)})
-
+def fetch_contents(subreddit, nextToken=None):
     url = "http://reddit.com/r/%s.json" % subreddit
+    if nextToken is not None:
+        url = "%s?after=%s" % (url, nextToken)
+
     resp = requests.get(url, headers={'User-Agent': 'repinterest/1.0 by greenmangoes'})
-    print "Cache miss"
 
-    clean = []
-    if resp.ok:
-        items = resp.json()['data']['children']
-
+    try:
+        json_doc = resp.json()
+        items = json_doc['data']['children']
+        nextToken = json_doc['data']['after']
+        clean = []
         for item in items:
             url = item['data']['url']
 
@@ -75,8 +71,34 @@ def data(subreddit):
                 'title': item['data']['title']
             })
 
-        cache.setex(subreddit, 600, pickle.dumps(clean))
-    return jsonify({"data": clean})
+        return clean, nextToken
+    except Exception as e:
+        print "Failed to fetch for url %s" % url
+        raise e
+
+
+def fetch_contents_cached(subreddit):
+    data = cache.get(subreddit)
+
+    if data is not None:
+        print "Cache hit"
+        return jsonify({"data": pickle.loads(data)})
+
+    print "Cache miss"
+
+    items = []
+    nextToken = None
+    (newItems, nextToken) = fetch_contents(subreddit, nextToken)
+    items += newItems
+
+    cache.setex(subreddit, 600, pickle.dumps(items))
+    return items
+
+
+@app.route('/r/<subreddit>')
+def data(subreddit):
+    data = fetch_contents_cached(subreddit)
+    return jsonify({"data": data})
 
 
 @app.route('/<path:sc>')
