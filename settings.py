@@ -1,6 +1,6 @@
 class Config(object):
     DEBUG = False
-    SECRET_KEY = "dsadasdnasnllnasknslakdladnslkadnskldnalkdnsaldnskakaslnkndkanksldnkaddsanklkansdknldasnkl"
+    SECRET_KEY = None
     HOST = "0.0.0.0"
     PORT = 5000
 

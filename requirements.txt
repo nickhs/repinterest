@@ -1,6 +1,4 @@
 Flask>=0.8
-hiredis>=0.1.1
 redis>=2.6.2
 requests>=0.13.9
-gunicorn
-gevent
+gunicorn>-19.7.1

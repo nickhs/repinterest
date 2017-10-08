@@ -90,6 +90,7 @@ def read_reddit_list():
     global reddit_list
     reddit_list = data.split('\n')[:-1]
 
+
 read_reddit_list()
 
 if __name__ == '__main__':
