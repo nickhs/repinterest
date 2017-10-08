@@ -82,7 +82,7 @@ def fetch_contents_cached(subreddit):
 
     if data is not None:
         print "Cache hit"
-        return jsonify({"data": pickle.loads(data)})
+        return pickle.loads(data)
 
     print "Cache miss"
 
