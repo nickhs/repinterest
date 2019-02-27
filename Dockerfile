@@ -21,8 +21,8 @@ COPY templates /srv/repinterest/templates
 COPY settings.py /srv/repinterest/
 COPY main.py /srv/repinterest/
 
-EXPOSE 8000
+EXPOSE 80
 WORKDIR /srv/repinterest
 
 # eww
-CMD sh -c "redis-server /srv/redis.conf; ENV=prod gunicorn main:app -w 2 -b 0.0.0.0:8000 --access-logfile - --error-logfile -"
+CMD sh -c "redis-server /srv/redis.conf; ENV=prod gunicorn main:app -w 2 -b 0.0.0.0:80 --access-logfile - --error-logfile -"
