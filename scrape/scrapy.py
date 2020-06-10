@@ -16,7 +16,7 @@ def check_sub(sub):
     pic_count = 0
 
     if not r.ok:
-        print "FAILED TO GET " + sub
+        print("FAILED TO GET " + sub)
         return sub, 0
 
     for idx, child in enumerate(r.json['data']['children']):
@@ -26,7 +26,7 @@ def check_sub(sub):
             if check in url:
                 pic_count += 1
 
-    print sub, pic_count
+    print(sub, pic_count)
     return sub, pic_count
 
 if __name__ == "__main__":

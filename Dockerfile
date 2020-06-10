@@ -3,9 +3,9 @@ FROM alpine
 RUN apk update
 RUN apk add alpine-sdk
 RUN apk add redis
-RUN apk add python
-RUN apk add python-dev
-RUN apk add py-pip
+RUN apk add python3
+RUN apk add python3-dev
+RUN apk add py3-pip
 
 RUN mkdir -p /var/run/
 RUN mkdir -p /srv/repinterest/

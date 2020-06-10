@@ -14,7 +14,7 @@ if os.environ.get('ENV') == 'PROD':
 else:
     app.config.from_object(settings.DevelopmentConfig)
 
-print app.config
+print(app.config)
 
 cache = redis.StrictRedis(host=app.config['REDIS_HOST'],
                           port=app.config['REDIS_PORT'],
@@ -73,7 +73,7 @@ def fetch_contents(subreddit, nextToken=None):
 
         return clean, nextToken
     except Exception as e:
-        print "Failed to fetch for url %s" % url
+        print("Failed to fetch for url {}".format(url))
         raise e
 
 
@@ -81,10 +81,10 @@ def fetch_contents_cached(subreddit):
     data = cache.get(subreddit)
 
     if data is not None:
-        print "Cache hit"
+        print("Cache hit")
         return pickle.loads(data)
 
-    print "Cache miss"
+    print("Cache miss")
 
     items = []
     nextToken = None
